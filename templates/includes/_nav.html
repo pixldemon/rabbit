@@ -1,0 +1,12 @@
+<nav>
+	<h2>rabbit</h2>
+	<div>
+		{% if session.username %}
+		<a href="/logout">Logout</a>
+		<a href="/u/{{ session.username }}">{{ session.username }}</a>
+		{% else %}
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+		{% endif %}
+	</div>
+</nav>

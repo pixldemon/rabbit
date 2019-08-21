@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block body %}
+	<div style="display: flex;">
+		<h2>{{ user.username }}</h1>
+		{% if user.admin %}
+			<h3>Admin</h3>
+		{% endif %}
+	</div>
+	<h3>Joined {{ user.registration_date }}</h3>
+{% endblock %}

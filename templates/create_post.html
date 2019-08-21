@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+{% from "includes/_form_helpers.html" import render_field %}
+
+{% block body %}
+	<h1>Make a Post</h1>
+	<form action="/b/{{ board }}/create_post" method="POST">
+		{{ render_field(form.title) }}
+		{{ render_field(form.body) }}
+		<input type="submit" value="Post">
+	</form>
+{% endblock %}

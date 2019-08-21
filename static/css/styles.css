@@ -1,0 +1,85 @@
+:root {
+	--primary-color: #fff;
+	--secondary-color: #3d3;
+	--secondary-color-highlight: #4e4;
+	--text-color: #555;
+
+	--border-radius: 4px;
+	--border-color: rgb(206, 206, 206);
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: roboto;
+}
+body {
+	min-height: 100vh;
+	background-color: var(--primary-color);
+	color: var(--text-color);
+}
+
+nav {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: .5em 2em;
+	border-bottom: .1px solid var(--border-color);
+	background-color: white;
+}
+nav > div > a {
+	margin: .5em;
+	text-decoration: none;
+	color: var(--text-color);
+}
+#page-wrapper {
+	padding: 2em;
+	width: 60%;
+	margin: 0 auto;
+}
+
+h1 {
+	margin: .6em 0;
+}
+form {
+	display: flex;
+	flex-direction: column;
+}
+input {
+	padding: .8em;
+	margin: .3em 0;
+
+	border-radius: var(--border-radius);
+	border: 1px solid var(--border-color)
+}
+input[type="submit"] {
+	color: var(--primary-color);
+	cursor: pointer;
+	border: none;
+	background-color: var(--secondary-color);
+}
+input[type="submit"]:hover {
+	background-color: var(--secondary-color-highlight);
+}
+.flash {
+	padding: .5em;
+	margin: .7em 0;
+	border-radius: var(--border-radius);
+}
+.flash-error {
+	border: 1px solid red;
+	color: red;
+	background-color: rgb(255, 198, 198);
+}
+.flash-success {
+	border: 1px solid green;
+	color: green;
+	background-color: rgb(175, 255, 202);
+}
+@font-face {
+	font-family: "roboto";
+	src: url("/static/fonts/roboto/Roboto-Regular.ttf");
+}
