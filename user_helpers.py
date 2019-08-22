@@ -1,3 +1,24 @@
+from main import mysql
+
+
+class User:
+	_id = 0
+	username = ""
+	email = ""
+	password = ""
+	admin = False
+	registration_date = ""
+	
+	def __init__(self, props):
+		self._id = props["id"]
+		self.username = props["username"]
+		self.email = props["email"]
+		self.password = props["password"]
+		self.admin = props["type"] == "admin"
+		self.registration_date = props["registration_date"]
+
+class UserNotFoundError(Exception):
+	pass
 
 def get_user_by_id(_id):
 
@@ -30,21 +51,3 @@ def user_exists(username):
 		return False
 	
 	return True
-
-class User:
-	_id = 0
-	username = ""
-	email = ""
-	password = ""
-	admin = False
-	registration_date = ""
-	def __init__(self, props):
-		self._id = props["id"]
-		self.username = props["username"]
-		self.email = props["email"]
-		self.password = props["password"]
-		self.admin = props["type"] == "admin"
-		self.registration_date = props["registration_date"]
-
-class UserNotFoundError(Exception):
-	pass
