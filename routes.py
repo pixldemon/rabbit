@@ -6,6 +6,8 @@ from user_helpers import get_user, get_user_by_id, user_exists
 from main import mysql
 from posts import Post, get_post_by_id
 
+from db_helpers import execute
+
 routes = Blueprint("routes", __name__, template_folder="templates")
 
 @routes.route("/")
@@ -19,11 +21,7 @@ def login():
 
 	if request.method == "POST" and form.validate():
 
-		cur = mysql.connection.cursor()
-		cur.execute("SELECT password FROM users WHERE username = %s", (request.form["username"],))
-
-		result = cur.fetchone()
-		cur.close()
+		result = execute("SELECT password FROM users WHERE username = %s", (request.form["username"],))
 
 		if result and sha256_crypt.verify(form.password.data, result["password"]):
 
@@ -33,7 +31,7 @@ def login():
 
 		else:
 			flash("Invalid password and/or username", "error")
-			return redirect(url_for("login"))
+			return redirect(url_for("routes.login"))
 
 	return render_template("login.html", form=form)
 
@@ -44,8 +42,13 @@ def logout():
 	return redirect(url_for("routes.home"))
 
 @routes.route("/u/<string:username>")
-def profile(username):
-	return render_template("profile.html", user=get_user(username))
+def view_profile(username):
+
+	user = get_user(username)
+	posts = execute("SELECT * FROM posts WHERE author_id = %s;", (user._id,), True)
+	posts = list(map(lambda p: Post(p), posts))
+
+	return render_template("profile.html", user=user, posts=posts)
 
 
 @routes.route("/register", methods=["GET", "POST"])
@@ -64,11 +67,8 @@ def register():
 		email = form.email.data
 		password = str(sha256_crypt.encrypt(form.password.data))
 
-		cur = mysql.connection.cursor()
-		cur.execute("INSERT INTO users(email, username, password) VALUES(%s, %s, %s)", (email, username, password))
-
-		mysql.connection.commit()
-		cur.close()
+		execute("INSERT INTO users(email, username, password) VALUES(%s, %s, %s)", (email, username, password))
+	
 
 		flash("Thank you! You are now registered", "success")
 		return redirect(url_for("routes.home"))
@@ -80,23 +80,18 @@ def create_post(board):
 
 	if not "username" in session:
 		flash("You have to log in to be able to post", "error")
-		return redirect(url_for("login"))
+		return redirect(url_for("routes.login"))
 
 	form = PostForm(request.form)
 	author = get_user(session["username"])
 
 	if request.method == "POST" and form.validate():
 		
-		cur = mysql.connection.cursor()
-		cur.execute("INSERT INTO posts(author_id, title, body, board) VALUES(%s, %s, %s, %s)", (author._id, form.title.data, form.body.data, board))
+		execute("INSERT INTO posts(author_id, title, body, board) VALUES(%s, %s, %s, %s)", (author._id, form.title.data, form.body.data, board))
+		_id = execute("SELECT LAST_INSERT_ID();")["LAST_INSERT_ID()"]
 		
-		cur.execute("SELECT LAST_INSERT_ID();")
-		_id = cur.fetchone()["LAST_INSERT_ID()"]
-		mysql.connection.commit()
-		cur.close()
-
 		print(id)
-		return redirect(url_for("view_post", board=board, _id=_id))
+		return redirect(url_for("routes.view_post", board=board, _id=_id))
 	else:
 		return render_template("create_post.html", board=board, form=form)
 
@@ -110,3 +105,17 @@ def view_post(board, _id):
 	
 	flash("This post was not posted on this board", "error")
 	return redirect(url_for("home"))
+
+@routes.route("/b/<string:board>")
+def view_board(board):
+	
+	posts = execute("SELECT * FROM posts WHERE board = %s;", (board,), True)
+	print(posts)
+	if posts:
+		print("\n\n\n\n\n\n\n\n\n\n\n\n\n")
+		posts = list(map(lambda p: Post(p), posts))
+		print(posts)
+		return render_template("board.html", board=board, posts=posts)
+	else:
+		flash("This board does not exist", "error")
+		return redirect(url_for("routes.home")) 

@@ -1,0 +1,22 @@
+{% macro render_post(post) %}
+	<div class="post">
+		<div class="post-titlebar">
+			<div>
+				<span><h3>b/{{ post.board }}</h3></span>
+				<span>
+					<a {% if post.author.is_admin %}
+							style='color:red;'
+						{% endif %}
+					href="/u/{{ post.author.username }}">
+						u/{{ post.author.username }}
+					</a>
+				</span>
+			</div>
+			<span>{{ post.creation_date }}</span>
+		</div>
+		<div class="post-body">
+			<h2>{{ post.title }}</h2>
+			<p>{{ post.body|safe }}</p>
+		</div>
+	</div>
+{% endmacro %}

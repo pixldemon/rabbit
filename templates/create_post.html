@@ -5,7 +5,7 @@
 	<h1>Make a Post</h1>
 	<form action="/b/{{ board }}/create_post" method="POST">
 		{{ render_field(form.title) }}
-		{{ render_field(form.body) }}
+		{{ render_field(form.body, rows="6") }}
 		<input type="submit" value="Post">
 	</form>
 {% endblock %}

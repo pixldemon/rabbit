@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+{% from "includes/_post_helpers.html" import render_post %}
+
+{% block body %}
+	<div>
+		<a href="/b/{{board}}/create_post" class="btn-primary btn-post">Create Post</a>
+	</div>
+	<div class="feed">
+		{% for post in posts %}
+			{{ render_post(post) }}
+		{% endfor %}
+	</div>
+{% endblock %}

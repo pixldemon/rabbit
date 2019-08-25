@@ -3,6 +3,7 @@
 	--secondary-color: #3d3;
 	--secondary-color-highlight: #4e4;
 	--text-color: #555;
+	--text-color-highlight: #999;
 
 	--border-radius: 4px;
 	--border-color: rgb(206, 206, 206);
@@ -30,17 +31,15 @@ nav {
 	border-bottom: .1px solid var(--border-color);
 	background-color: white;
 }
+a {
+	display: inline-block;
+	text-decoration: none;
+	color: inherit;
+}
 nav > div > a {
 	margin: .5em;
-	text-decoration: none;
 	color: var(--text-color);
 }
-#page-wrapper {
-	padding: 2em;
-	width: 60%;
-	margin: 0 auto;
-}
-
 h1 {
 	margin: .6em 0;
 }
@@ -48,14 +47,15 @@ form {
 	display: flex;
 	flex-direction: column;
 }
-input {
+input[type="text"], input[type="submit"], .btn-primary, textarea {
+	resize: none;
 	padding: .8em;
 	margin: .3em 0;
 
 	border-radius: var(--border-radius);
 	border: 1px solid var(--border-color)
 }
-input[type="submit"] {
+input[type="submit"], .btn-primary {
 	color: var(--primary-color);
 	cursor: pointer;
 	border: none;
@@ -64,6 +64,12 @@ input[type="submit"] {
 input[type="submit"]:hover {
 	background-color: var(--secondary-color-highlight);
 }
+#page-wrapper {
+	padding: 2em;
+	width: 70%;
+	margin: 0 auto;
+}
+
 .flash {
 	padding: .5em;
 	margin: .7em 0;
@@ -79,7 +85,45 @@ input[type="submit"]:hover {
 	color: green;
 	background-color: rgb(175, 255, 202);
 }
+
+.post, .profile {
+	padding: 1.2em;
+	margin: .3em 0;
+
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+}
+
+.profile > div {
+	display: flex;
+	align-items: baseline;
+}
+.profile > div > p {
+	margin: 0 .5em;
+}
+.post h2 {
+	font-weight: normal;
+}
+.post-titlebar {
+	margin-bottom: .5em;
+	color: var(--text-color-highlight);
+}
+.post-titlebar, .post-titlebar > div {
+	font-size: 0.9em;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.post-titlebar h3 {
+	font-size: 1.1em;
+	margin-right: .4em;
+	color: var(--text-color);
+	display: inline;
+}
+.btn-post {
+
+}
 @font-face {
 	font-family: "roboto";
-	src: url("/static/fonts/roboto/Roboto-Regular.ttf");
+	src: url("/static/fonts/roboto/Roboto-Light.ttf");
 }

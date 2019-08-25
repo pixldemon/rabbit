@@ -3,7 +3,7 @@
 	<div>
 		{% if session.username %}
 		<a href="/logout">Logout</a>
-		<a href="/u/{{ session.username }}">{{ session.username }}</a>
+		<a href="/u/{{ session.username }}">u/{{ session.username }}</a>
 		{% else %}
 		<a href="/login">Login</a>
 		<a href="/register">Register</a>

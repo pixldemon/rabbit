@@ -1,11 +1,23 @@
 {% extends "main.html" %}
+{% from "includes/_post_helpers.html" import render_post %}
 
 {% block body %}
-	<div style="display: flex;">
-		<h2>{{ user.username }}</h1>
-		{% if user.admin %}
-			<h3>Admin</h3>
-		{% endif %}
+	<div class="profile">
+		<div>
+			<h2>u/{{ user.username }}</h2>
+			{% if user.is_admin %}
+				<p style="color: red;">admin</p>
+			{% endif %}
+		</div>
+		<p>Joined {{ user.registration_date }}</p>
 	</div>
-	<h3>Joined {{ user.registration_date }}</h3>
+	<div class="feed">
+{#		<h3>Posts</h3>
+		{% if not posts %}
+			<p>There is nothing here</p>
+		{% endif %} #}
+		{% for post in posts %}
+			{{ render_post(post) }}
+		{% endfor %}
+	</div>
 {% endblock %}

@@ -1,7 +1,6 @@
 {% extends "main.html" %}
+{% from "includes/_post_helpers.html" import render_post %}
 
 {% block body %}
-	<h2>{{ post.title }}</h2>
-	<h3>{{ post.author.username }}</h3>
-	<p>{{ post.body }}</p>
+	{{ render_post(post) }}
 {% endblock %}

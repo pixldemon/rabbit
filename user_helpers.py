@@ -1,12 +1,11 @@
-from main import mysql
-
+from db_helpers import execute
 
 class User:
 	_id = 0
 	username = ""
 	email = ""
 	password = ""
-	admin = False
+	is_admin = False
 	registration_date = ""
 	
 	def __init__(self, props):
@@ -14,7 +13,7 @@ class User:
 		self.username = props["username"]
 		self.email = props["email"]
 		self.password = props["password"]
-		self.admin = props["type"] == "admin"
+		self.is_admin = props["type"] == "admin"
 		self.registration_date = props["registration_date"]
 
 class UserNotFoundError(Exception):
@@ -22,10 +21,7 @@ class UserNotFoundError(Exception):
 
 def get_user_by_id(_id):
 
-	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM users WHERE id = %s;", (_id,))
-	result = cur.fetchone()
-	cur.close()
+	result = execute("SELECT * FROM users WHERE id = %s;", (_id,))
 
 	if result:
 		return User(result)
@@ -34,10 +30,7 @@ def get_user_by_id(_id):
 
 def get_user(username):
 
-	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-	result = cur.fetchone()
-	cur.close()
+	result = execute("SELECT * FROM users WHERE username = %s;", (username,))
 
 	if result:
 		return User(result)
