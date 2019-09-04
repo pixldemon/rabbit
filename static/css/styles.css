@@ -47,7 +47,7 @@ form {
 	display: flex;
 	flex-direction: column;
 }
-input[type="text"], input[type="submit"], .btn-primary, textarea {
+input[type="text"], input[type="submit"], input[type="password"], .btn-primary, textarea {
 	resize: none;
 	padding: .8em;
 	margin: .3em 0;
