@@ -1,7 +1,7 @@
 from db_helpers import execute
 
 class User:
-	_id = 0
+	id = 0
 	username = ""
 	email = ""
 	password = ""
@@ -9,7 +9,7 @@ class User:
 	registration_date = ""
 	
 	def __init__(self, props):
-		self._id = props["id"]
+		self.id = props["id"]
 		self.username = props["username"]
 		self.email = props["email"]
 		self.password = props["password"]

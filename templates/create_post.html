@@ -6,6 +6,6 @@
 	<form action="/b/{{ board }}/create_post" method="POST">
 		{{ render_field(form.title) }}
 		{{ render_field(form.body, rows="6") }}
-		<input type="submit" value="Post">
+		<input class="btn-primary" type="submit" value="Post">
 	</form>
 {% endblock %}

@@ -11,7 +11,7 @@
 * {
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box;
+	box-sizing: border-box !important;
 	font-family: roboto;
 }
 body {
@@ -21,6 +21,7 @@ body {
 }
 
 nav {
+	z-index: 10;
 	position: sticky;
 	top: 0;
 	width: 100%;
@@ -30,11 +31,6 @@ nav {
 	padding: .5em 2em;
 	border-bottom: .1px solid var(--border-color);
 	background-color: white;
-}
-a {
-	display: inline-block;
-	text-decoration: none;
-	color: inherit;
 }
 nav > div > a {
 	margin: .5em;
@@ -47,29 +43,41 @@ form {
 	display: flex;
 	flex-direction: column;
 }
-input[type="text"], input[type="submit"], input[type="password"], .btn-primary, textarea {
+hr {
+	height: 1px;
+	border: none;
+	outline: none;
+	margin: 1em 0;
+	opacity: 0.3;
+	background-color: var(--text-color-highlight);
+}
+.textinput, .btn-primary {
 	resize: none;
 	padding: .8em;
 	margin: .3em 0;
 
 	border-radius: var(--border-radius);
-	border: 1px solid var(--border-color)
+	border: none;
+	box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.2);
 }
-input[type="submit"], .btn-primary {
+.btn-primary {
+	font-weight: bold;
+	transition: .3s;
+	font-size: 1em;
 	color: var(--primary-color);
 	cursor: pointer;
 	border: none;
 	background-color: var(--secondary-color);
 }
-input[type="submit"]:hover {
+.btn-primary:hover {
 	background-color: var(--secondary-color-highlight);
+	box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.2);
 }
 #page-wrapper {
 	padding: 2em;
-	width: 70%;
+	max-width: 800px;
 	margin: 0 auto;
 }
-
 .flash {
 	padding: .5em;
 	margin: .7em 0;
@@ -81,19 +89,21 @@ input[type="submit"]:hover {
 	background-color: rgb(255, 198, 198);
 }
 .flash-success {
-	border: 1px solid green;
-	color: green;
+	border: 1px solid #6d6;
+	color: green; 
 	background-color: rgb(175, 255, 202);
+}
+
+.post, .profile, .btn-primary:hover, .textarea {
+	box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.2);
 }
 
 .post, .profile {
 	padding: 1.2em;
-	margin: .3em 0;
+	margin: .8em 0;
 
-	border: 1px solid var(--border-color);
 	border-radius: var(--border-radius);
 }
-
 .profile > div {
 	display: flex;
 	align-items: baseline;
@@ -105,10 +115,9 @@ input[type="submit"]:hover {
 	font-weight: normal;
 }
 .post-titlebar {
-	margin-bottom: .5em;
 	color: var(--text-color-highlight);
 }
-.post-titlebar, .post-titlebar > div {
+.post-titlebar, .post-titlebar > div, .comment-footer {
 	font-size: 0.9em;
 	display: flex;
 	justify-content: space-between;
@@ -120,9 +129,46 @@ input[type="submit"]:hover {
 	color: var(--text-color);
 	display: inline;
 }
-.btn-post {
-
+.comment {
+	margin: .6em 0;
 }
+.comment-body, .post-body {
+	margin: .35em 0;
+}
+.comment-footer {
+	
+}
+.comment-footer > a {
+	color: var(--text-color-highlight);
+	text-decoration: underline;
+}
+
+.thread {
+	padding-left: .8em;
+	margin-left: .4em;
+	border-left: 2px solid #ddd;
+	overflow: visible;
+}
+.reply:not(:first-child)::before {
+	content: "";
+	display: block;
+	position: relative;
+	height: 1px;
+	border: none;
+	outline: none;
+	margin: .5rem 0;
+	opacity: 0.3;
+	background-color: var(--text-color-highlight);
+}
+a {
+	display: inline-block;
+	text-decoration: none;
+	color: inherit;
+}
+.post a:hover, .reply a:hover {
+	text-decoration: underline;
+}
+
 @font-face {
 	font-family: "roboto";
 	src: url("/static/fonts/roboto/Roboto-Light.ttf");

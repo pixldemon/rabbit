@@ -7,7 +7,7 @@
 	</div>
 	<div class="feed">
 		{% for post in posts %}
-			{{ render_post(post) }}
+			{{ render_post(post, commentform=commentform) }}
 		{% endfor %}
 	</div>
 {% endblock %}

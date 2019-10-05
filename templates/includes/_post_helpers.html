@@ -1,22 +1,94 @@
-{% macro render_post(post) %}
-	<div class="post">
-		<div class="post-titlebar">
-			<div>
-				<span><h3>b/{{ post.board }}</h3></span>
-				<span>
-					<a {% if post.author.is_admin %}
-							style='color:red;'
-						{% endif %}
-					href="/u/{{ post.author.username }}">
-						u/{{ post.author.username }}
-					</a>
-				</span>
-			</div>
-			<span>{{ post.creation_date }}</span>
+{% from "includes/_form_helpers.html" import render_field %}
+
+{% macro render_post(post, commentform, target_id, expand_thread=True) %}
+<div class="post">
+
+	<div class="post-titlebar">
+		<div>
+			<span>
+				<h3><a href="/b/{{ post.board_name}}">b/{{ post.board_name }}</a></h3>
+			</span>
+			<span>
+				<a {% if post.author.is_admin %} style='color:red;' {% endif %} href="/u/{{ post.author.username }}">
+					u/{{ post.author.username }}
+				</a>
+			</span>
 		</div>
-		<div class="post-body">
-			<h2>{{ post.title }}</h2>
-			<p>{{ post.body|safe }}</p>
-		</div>
+		<span>{{ post.creation_date }}</span>
 	</div>
+
+	<div class="post-body">
+		<h2><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
+		<p>{{ post.body|safe }}</p>
+	</div>
+
+	{% if target_id == post.id %}
+	<hr>
+	<div class="commentform">
+		<form action="/comment" method="post">
+			{{ render_field(commentform.body) }}
+			<button class="btn-primary" type="submit" name="post" value="{{ post.id }}">Comment</button>
+		</form>
+	</div>
+	{% else %}
+	<div class="comment-footer">
+		<a href="/reply/{{ post.id }}">Reply</a>
+	</div>
+	{% endif %}
+
+	{% if post.children|length > 0 and expand_thread %}
+	<hr>
+	<div class="">
+		{% for child in post.children %}
+		{{ render_comment(child, target_id, commentform) }}
+		{% endfor %}
+	</div>
+	{% endif %}
+
+</div>
+{% endmacro %}
+
+
+{% macro render_comment(comment, target_id, commentform, expand_thread=True) %}
+<div class="reply">
+	<div class="comment">
+
+		<div class="post-titlebar">
+			<span>
+				<a {% if comment.author.is_admin %} style='color:red;' {% endif %}
+					href="/u/{{ comment.author.username }}">
+					u/{{ comment.author.username }}
+				</a>
+			</span>
+			<span>{{ comment.creation_date }}</span>
+		</div>
+
+		<div class="comment-body">
+			{{ comment.body }}
+		</div>
+
+		<div class="comment-footer">
+			<a href="/reply/{{ comment.id }}">Reply</a>
+		</div>
+
+	</div>
+
+	{% if (comment.children|length > 0 or target_id == comment.id) and expand_thread %}
+	<div class="thread">
+
+		{% if target_id == comment.id %}
+		<div class="commentform">
+			<form action="/comment" method="post">
+				{{ render_field(commentform.body) }}
+				<button class="btn-primary" type="submit" name="post" value="{{ comment.id }}">Comment</button>
+			</form>
+		</div>
+		{% endif %}
+
+		{% for child in comment.children %}
+		{{ render_comment(child, target_id, commentform) }}
+		{% endfor %}
+	</div>
+	{% endif %}
+</div>
 {% endmacro %}

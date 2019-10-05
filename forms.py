@@ -15,5 +15,7 @@ class LoginForm(Form):
 
 class PostForm(Form):
 	title = StringField("Title", [validators.Length(min=5, max=200), validators.DataRequired()])
-	body = TextAreaField("Text", [validators.Length(min=0, max=500)])
+	body = TextAreaField("Body", [validators.Length(max=500)])
 
+class CommentForm(Form):
+	body = TextAreaField("Leave a comment", [validators.Length(max=5000), validators.DataRequired()])

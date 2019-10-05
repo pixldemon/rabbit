@@ -1,5 +1,5 @@
 {% extends "main.html" %}
-{% from "includes/_post_helpers.html" import render_post %}
+{% from "includes/_post_helpers.html" import render_post, render_comment %}
 
 {% block body %}
 	<div class="profile">
@@ -12,12 +12,21 @@
 		<p>Joined {{ user.registration_date }}</p>
 	</div>
 	<div class="feed">
-{#		<h3>Posts</h3>
 		{% if not posts %}
-			<p>There is nothing here</p>
-		{% endif %} #}
+		<p>There is nothing here</p>
+		{% endif %}
+
 		{% for post in posts %}
-			{{ render_post(post) }}
+		
+		{% if post.board_id != 1 %}
+		{{ render_post(post, commentform=commentform, expand_thread=False) }}
+		{% else %}
+		<div class="post">
+			<div>Replying to {{ post.parent_id }} on b/{{ post.board_id }} posted by u/{{ post.author.username }}</div>
+			{{ render_comment(post, commentform=commentform, expand_thread=False) }}
+		</div>
+		{% endif %}
+		
 		{% endfor %}
 	</div>
 {% endblock %}

@@ -1,35 +1,41 @@
 from main import mysql
-from user_helpers import get_user_by_id
+from users import get_user_by_id
+from db_helpers import execute
 
-def get_post_by_id(_id):
+def get_post_by_id(id):
 	
 	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM posts WHERE id=%s", (_id,))
+	cur.execute("SELECT * FROM comments WHERE id=%s", (id,))
 	result = cur.fetchone()
 
 	if result:
-		return Post(result)
+		return Comment(result)
 	
 	raise PostNotFoundError("This post does not exist")
 
-class Post:
-	_id = 0
+class Comment:
+	id = 0
 	author = None
 	title = ""
 	body = ""
-	score = 0
 	creation_date = ""
-	board = "all"
+	board_id = None
+	board_name = None
+	parent_id = None
+	children = []
 
 	def __init__(self, props):
-		self._id = props["id"]
+		self.id = props["id"]
 		self.title = props["title"]
 		self.body = props["body"]
-		self.score = props["score"]
 		self.creation_date = props["creation_date"]
-		self.board = props["board"]
-
+		self.board_id = props["board_id"]
+		self.board_name = execute("SELECT name FROM boards WHERE id = %s", (self.board_id,))["name"]
 		self.author = get_user_by_id(props["author_id"])
-
+		self.parent_id = props["parent_id"]
+		
+		self.children = execute("SELECT * FROM comments WHERE parent_id = %s", (self.id,), True)
+		self.children = list(map(lambda c: Comment(c), self.children))
+		
 class PostNotFoundError(Exception):
 	pass

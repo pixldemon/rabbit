@@ -1,6 +1,9 @@
 {% extends "main.html" %}
 {% from "includes/_post_helpers.html" import render_post %}
+{% from "includes/_form_helpers.html" import render_field %}
 
 {% block body %}
-	{{ render_post(post) }}
+
+{{ render_post(post, commentform, comment_id) }}
+
 {% endblock %}
