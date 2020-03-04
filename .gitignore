@@ -1,2 +1,5 @@
 __pycache__/
 flask_app.py.old
+.vscode/
+Pipfile
+Pipfile.lock

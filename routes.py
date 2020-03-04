@@ -173,14 +173,10 @@ def reply(comment_id):
 
 			db.session.commit()
 
-	# BIG TODO: HIGHLY INEFFICIENT WAY OF FINDING ORIGINAL POST	
 	# Get target from DB
 	target = getbyid(Submission, comment_id)
 	post = target.original_post
 	
-	# while post.board_id == 0:
-	# 	post = post.parent
-
 	# Render the post
 	return redirect(url_for("routes.view_post", id=post.id, reply=target.id if request.method=="GET" else None))
 
