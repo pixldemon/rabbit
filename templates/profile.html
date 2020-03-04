@@ -1,32 +1,35 @@
 {% extends "main.html" %}
-{% from "includes/_post_helpers.html" import render_post, render_comment %}
+{% from "includes/_post_helpers.html" import render_post, render_comment, render_user %}
 
 {% block body %}
-	<div class="profile">
-		<div>
-			<h2>u/{{ user.username }}</h2>
-			{% if user.is_admin %}
-				<p style="color: red;">admin</p>
-			{% endif %}
-		</div>
-		<p>Joined {{ user.registration_date }}</p>
-	</div>
-	<div class="feed">
-		{% if not posts %}
-		<p>There is nothing here</p>
+<div class="profile">
+	<div>
+		<h2>u/{{ user.username }}</h2>
+		{% if user.type == "admin" %}
+		<p style="color: red;">admin</p>
 		{% endif %}
+	</div>
+	<p>Joined {{ user.registration_date }}</p>
+</div>
+<div class="feed">
+	{% if not submissions %}
+	<p>There is nothing here</p>
+	{% endif %}
 
-		{% for post in posts %}
-		
-		{% if post.board_id != 1 %}
-		{{ render_post(post, commentform=commentform, expand_thread=False) }}
-		{% else %}
-		<div class="post">
-			<div>Replying to {{ post.parent_id }} on b/{{ post.board_id }} posted by u/{{ post.author.username }}</div>
-			{{ render_comment(post, commentform=commentform, expand_thread=False) }}
+	{% for submission in submissions %}
+
+	{% if submission.board_id != 0 %}
+	{{ render_post(submission, expand_thread=False) }}
+	{% else %}
+	<div class="post">
+		<div>
+
+			Replying to {{ render_user(submission.parent.author) }} on <a href="/b/{{ submission.original_post.board.name }}">b/{{ submission.original_post.board.name }}</a>: 
+			"{{ submission.parent.title if (submission.parent.board_id != 0) else (submission.parent.body|truncate(50, end="...")) }}"
 		</div>
-		{% endif %}
-		
-		{% endfor %}
+		{{ render_comment(submission, expand_thread=False) }}
 	</div>
+	{% endif %}
+	{% endfor %}
+</div>
 {% endblock %}

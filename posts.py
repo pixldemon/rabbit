@@ -1,4 +1,4 @@
-from main import mysql
+from main import db
 from users import get_user_by_id
 from db_helpers import execute
 

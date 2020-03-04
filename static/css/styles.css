@@ -129,6 +129,9 @@ hr {
 	color: var(--text-color);
 	display: inline;
 }
+.user[data-rank="admin"] {
+	color: red;
+}
 .comment {
 	margin: .6em 0;
 }

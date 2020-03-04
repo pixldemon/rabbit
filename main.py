@@ -1,16 +1,20 @@
+"""
+TODO: Use HTML data attributes to style usernames depending on their roles/ranks, perhaps more in appropiate usecases 
+TODO: Sort posts by creation date
+TODO: List boards on homepage
+TODO: Board description
+TODO: Figure out how to rank posts
+"""
+
 from flask import Flask
-from flask_mysqldb import MySQL
+from database import db
+
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///rabbit.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# MySQL Configuration
-app.config["MYSQL_HOST"] = "0.0.0.0"
-app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "qwerty"
-app.config["MYSQL_DB"] = "rabbit"
-app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-
-mysql = MySQL(app)
+db.init_app(app)
 
 if __name__ == "__main__":
 	
